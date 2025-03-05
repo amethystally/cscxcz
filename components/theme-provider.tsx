@@ -1,7 +1,26 @@
-"use client"
-import { ThemeProvider as NextThemesProvider, type ThemeProviderProps } from "next-themes"
+import React, { useState, useEffect } from 'react';
 
-export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>
-}
+const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState('light');
 
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove('light', 'dark');
+    root.classList.add(theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
+  return (
+    <div>
+      <button onClick={toggleTheme}>
+        {theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+      </button>
+      {children}
+    </div>
+  );
+};
+
+export default ThemeProvider;
